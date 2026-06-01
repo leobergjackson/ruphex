@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Mic, MicOff, Paperclip, Send, X,
@@ -35,14 +35,25 @@ export default function MediaInput() {
   const photoInputRef = useRef<HTMLInputElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const chatAbortRef = useRef<AbortController | null>(null);
+  const objectUrlsRef = useRef<string[]>([]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Cleanup on unmount: stop any in-flight recording/request, revoke blob URLs
+  useEffect(() => {
+    return () => {
+      chatAbortRef.current?.abort();
+      mediaRecorderRef.current?.stop();
+      objectUrlsRef.current.forEach(URL.revokeObjectURL);
+    };
+  }, []);
+
   // ── Send / Groq streaming ──────────────────────────────────────────────────
 
-  const handleSend = async () => {
+  const handleSend = useCallback(async () => {
     const content = input.trim();
     if (!content && attachedFiles.length === 0) return;
 
@@ -60,6 +71,10 @@ export default function MediaInput() {
     const assistantId = crypto.randomUUID();
     setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '' }]);
 
+    chatAbortRef.current?.abort();
+    const abortCtrl = new AbortController();
+    chatAbortRef.current = abortCtrl;
+
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
@@ -67,6 +82,7 @@ export default function MediaInput() {
         body: JSON.stringify({
           messages: nextMessages.map(({ role, content }) => ({ role, content })),
         }),
+        signal: abortCtrl.signal,
       });
 
       if (!res.ok || !res.body) throw new Error('Chat failed');
@@ -91,20 +107,22 @@ export default function MediaInput() {
         body: JSON.stringify({ title: 'Recibo', body: 'Your message was processed.' }),
       }).catch(() => {});
     } catch (err) {
-      console.error('[Chat]', err);
-      setMessages(prev =>
-        prev.map(m =>
-          m.id === assistantId ? { ...m, content: 'Something went wrong — please try again.' } : m
-        )
-      );
+      if ((err as Error)?.name !== 'AbortError') {
+        console.error('[Chat]', err);
+        setMessages(prev =>
+          prev.map(m =>
+            m.id === assistantId ? { ...m, content: 'Something went wrong — please try again.' } : m
+          )
+        );
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [messages, input, attachedFiles]);
 
   // ── Voice recording → ElevenLabs STT ──────────────────────────────────────
 
-  const toggleRecording = async () => {
+  const toggleRecording = useCallback(async () => {
     if (isRecording) {
       mediaRecorderRef.current?.stop();
       setIsRecording(false);
@@ -143,13 +161,14 @@ export default function MediaInput() {
     } catch (err) {
       console.error('[Mic]', err);
     }
-  };
+  }, [isRecording]);
 
   // ── ElevenLabs TTS playback ────────────────────────────────────────────────
 
-  const playTTS = async (messageId: string, text: string) => {
+  const playTTS = useCallback(async (messageId: string, text: string) => {
     if (playingId === messageId) return;
     setPlayingId(messageId);
+    let url: string | null = null;
     try {
       const res = await fetch('/api/tts', {
         method: 'POST',
@@ -158,37 +177,53 @@ export default function MediaInput() {
       });
       if (!res.ok) throw new Error('TTS failed');
       const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      url = URL.createObjectURL(blob);
+      objectUrlsRef.current.push(url);
       const audio = new Audio(url);
-      audio.onended = () => { setPlayingId(null); URL.revokeObjectURL(url); };
-      audio.onerror = () => { setPlayingId(null); URL.revokeObjectURL(url); };
+      const cleanup = () => {
+        setPlayingId(null);
+        if (url) {
+          URL.revokeObjectURL(url);
+          objectUrlsRef.current = objectUrlsRef.current.filter(u => u !== url);
+        }
+      };
+      audio.onended = cleanup;
+      audio.onerror = cleanup;
       audio.play();
     } catch (err) {
       console.error('[TTS]', err);
       setPlayingId(null);
     }
-  };
+  }, [playingId]);
 
   // ── File attachment ────────────────────────────────────────────────────────
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'file') => {
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'file') => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     setIsUploading(true);
     setTimeout(() => {
-      const newFiles = Array.from(files).map(file => ({
-        id: crypto.randomUUID(),
-        name: file.name,
-        type,
-        url: type === 'image' ? URL.createObjectURL(file) : undefined,
-      }));
+      const newFiles = Array.from(files).map(file => {
+        const url = type === 'image' ? URL.createObjectURL(file) : undefined;
+        if (url) objectUrlsRef.current.push(url);
+        return { id: crypto.randomUUID(), name: file.name, type, url };
+      });
       setAttachedFiles(prev => [...prev, ...newFiles]);
       setIsUploading(false);
     }, 400);
     e.target.value = '';
-  };
+  }, []);
 
-  const removeFile = (id: string) => setAttachedFiles(prev => prev.filter(f => f.id !== id));
+  const removeFile = useCallback((id: string) => {
+    setAttachedFiles(prev => {
+      const file = prev.find(f => f.id === id);
+      if (file?.url) {
+        URL.revokeObjectURL(file.url);
+        objectUrlsRef.current = objectUrlsRef.current.filter(u => u !== file.url);
+      }
+      return prev.filter(f => f.id !== id);
+    });
+  }, []);
 
   const isBusy = isLoading || isTranscribing || isUploading;
 

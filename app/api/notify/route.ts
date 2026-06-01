@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withTimeout } from '@/lib/validate';
 
 export async function POST(req: NextRequest) {
-  const { title, body } = await req.json();
-
   const pk = process.env.PUSH_CHANNEL_PRIVATE_KEY;
   const channelAddress = process.env.PUSH_CHANNEL_ADDRESS;
 
@@ -12,6 +11,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const { title, body } = await req.json();
+
     const [{ PushAPI, CONSTANTS }, { ethers }] = await Promise.all([
       import('@pushprotocol/restapi'),
       import('ethers'),
@@ -19,18 +20,23 @@ export async function POST(req: NextRequest) {
 
     const signer = new ethers.Wallet(pk);
 
-    const user = await PushAPI.initialize(signer, {
-      env: CONSTANTS.ENV.STAGING,
-    });
+    const user = await withTimeout(
+      PushAPI.initialize(signer, { env: CONSTANTS.ENV.STAGING }),
+      20_000
+    );
 
-    await user.channel.send(['*'], {
-      notification: { title, body },
-    });
+    await withTimeout(
+      user.channel.send(['*'], { notification: { title, body } }),
+      20_000
+    );
 
-    console.log(`[Push] Notification sent to ${channelAddress}`);
+    console.log(`[Push] Notification sent — channel ${channelAddress}`);
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('[Push] Error:', err);
-    return NextResponse.json({ error: 'Push failed' }, { status: 500 });
+    const msg = err instanceof Error ? err.message : 'Push failed';
+    console.error('[Push]', msg);
+    // Return 200 so the client doesn't treat this as a hard error —
+    // notifications are best-effort and shouldn't fail a chat turn.
+    return NextResponse.json({ error: msg, skipped: true });
   }
 }
