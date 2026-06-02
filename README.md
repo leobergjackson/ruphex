@@ -16,6 +16,11 @@ Recibo is a production-ready USDC invoice payment app for LATAM freelancers. It 
 4. The Recibo contract transfers USDC directly to the freelancer.
 5. The freelancer can off-ramp via Bitso using the fetched deposit address.
 
+## Architecture
+<img width="867" height="491" alt="image" src="https://github.com/user-attachments/assets/64b28b7e-646f-4db6-b628-588b86580db8" />
+<img width="1001" height="711" alt="Screenshot 2026-06-02 172247" src="https://github.com/user-attachments/assets/e1f4b7bb-3717-4486-8a1e-c26eaa883cac" />
+
+
 ## Smart contract
 - Contract: Recibo.sol (no admin, zero fee, non-custodial).
 - Method: `payInvoice(bytes32 invoiceId, address freelancer, uint256 amount)`.
