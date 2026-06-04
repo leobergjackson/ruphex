@@ -1,0 +1,10 @@
+{
+  "reference": "RCB-2026-014",
+  "description": "Brand identity & logo system for a Oaxaca coffee co-op",
+  "amountUSDC": 700,
+  "freelancer": "0x1111111111111111111111111111111111111111",
+  "client": "0x2222222222222222222222222222222222222222",
+  "paymentTxHash": "0xPASTE_YOUR_ARBITRUM_SEPOLIA_PAYMENT_TX_HASH",
+  "country": "MX",
+  "settledAt": "2026-06-03T00:00:00.000Z"
+}
