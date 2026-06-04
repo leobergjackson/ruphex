@@ -1,72 +1,68 @@
-# Recibo — ETH Mexico 2026
+# Recibo
 
-Recibo is a production-ready USDC invoice payment app for LATAM freelancers. It turns a client email or PDF into a smart payment link, settles on Arbitrum, and offers a Bitso off-ramp path for fiat withdrawal.
+Recibo is an AI-powered USDC payment gateway for LATAM freelancers, built for the **Ethereum Mexico 2026** hackathon. It streamlines the entire workflow from receiving a client email to off-ramping funds into a Mexican bank account.
 
-## What it does
-- Parse invoice text with AI and extract client, amount, and due date.
-- Generate a signed, shareable payment link for USDC on Arbitrum Sepolia.
-- Collect USDC directly from the client wallet to the freelancer wallet.
-- Store invoices locally in the browser for quick history and follow-up.
-- Fetch a Bitso deposit address for off-ramping USDC.
+## One Demo Path
+1. **AI Parse:** Paste raw invoice text (email, PDF dump). Groq extracts metadata and amounts.
+2. **Smart Link:** Generate a cryptographically encoded payment URL (no database).
+3. **On-Chain Settlement:** Client pays in USDC on Arbitrum Sepolia.
+4. **Verified Proof:** Real-time on-chain event detection and transaction receipts.
+5. **Direct Off-Ramp:** Integrated instructions for withdrawing to MXN via Bitso.
 
-## User flow
-1. Freelancer pastes invoice text into the dashboard.
-2. The AI parser extracts key fields and produces a smart link.
-3. The client opens the link, approves USDC, then confirms payment.
-4. The Recibo contract transfers USDC directly to the freelancer.
-5. The freelancer can off-ramp via Bitso using the fetched deposit address.
+## Tech Stack
+- **AI:** Groq Cloud (Parsing & Data Extraction)
+- **Blockchain:** Arbitrum Sepolia (USDC Payments)
+- **Smart Contracts:** Solidity (OpenZeppelin standards)
+- **Frontend:** Next.js 16, Tailwind CSS, Framer Motion
+- **Web3:** Wagmi, Viem, RainbowKit
+- **Fiat Integration:** Bitso API V3 (Optional balance preview)
 
-## Architecture
-<img width="867" height="491" alt="image" src="https://github.com/user-attachments/assets/64b28b7e-646f-4db6-b628-588b86580db8" />
-<img width="1001" height="711" alt="Screenshot 2026-06-02 172247" src="https://github.com/user-attachments/assets/e1f4b7bb-3717-4486-8a1e-c26eaa883cac" />
+## Trust & Security
+- **Non-Custodial:** Funds go directly from the client's wallet to the freelancer's wallet.
+- **Privacy First:** Invoice data is encoded in the URL and stored in local browser history. No central database.
+- **Bitso Honest Mode:** Clearly distinguishes between on-chain payments and manual off-ramp steps.
 
+## Submission Requirements
 
-## Smart contract
-- Contract: Recibo.sol (no admin, zero fee, non-custodial).
-- Method: `payInvoice(bytes32 invoiceId, address freelancer, uint256 amount)`.
-- Receipts: `InvoicePaid` event with invoiceId, payer, freelancer, and amount.
+### Real Transaction Proofs (Arbitrum Sepolia)
+*Note to judges: Use these hashes to verify contract interactions.*
 
-## API routes
-- POST /api/parse-invoice
-   - Uses Anthropic to parse invoice text.
-   - Handles currency normalization for common LATAM currencies.
-- GET /api/bitso-address
-   - Fetches the USDC deposit address from Bitso.
-   - Returns a fallback address for demo continuity if Bitso fails.
+1. **Approve USDC:** [Insert your Hash 1]
+2. **Pay Invoice:** [Insert your Hash 2]
+3. **Pay Invoice (Repeat):** [Insert your Hash 3]
 
-## Environment variables
-Create a local .env using [.env.example](.env.example) as a template.
+*The Recibo contract at `0x563249FfE1783050D95A2dc70fE549909b4D09a8` emits the `InvoicePaid` event.*
 
-Required:
-- `ANTHROPIC_API_KEY`
-- `BITSO_API_KEY`
-- `BITSO_API_SECRET`
-- `NEXT_PUBLIC_CONTRACT_ADDRESS`
-- `NEXT_PUBLIC_USDC_ADDRESS`
-- `NEXT_PUBLIC_CHAIN_ID`
+**Contract Deployment:** `0x0217eed43d9641f5255c032a544c0bffce7f6698448f1aa919a6929a8497cf61`
 
-## Local development
-```bash
-npm install
-npm run dev
+## Local Development
+
+1. **Setup Env:** Create `.env.local` with your API keys:
+```env
+GROQ_API_KEY=your_key
+GROQ_MODEL=llama-3.3-70b-versatile
+NEXT_PUBLIC_CONTRACT_ADDRESS=0x563249FfE1783050D95A2dc70fE549909b4D09a8
+NEXT_PUBLIC_USDC_ADDRESS=0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d
+NEXT_PUBLIC_CHAIN_ID=421614
+NEXT_PUBLIC_ARB_SEPOLIA_RPC_URL=your_arbitrum_sepolia_rpc_url
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
+
+# Optional Bitso Preview
+BITSO_API_KEY=
+BITSO_API_SECRET=
+BITSO_API_BASE_URL=https://stage.bitso.com
 ```
 
-## Contract development
+2. **Run:** `npm install && npm run dev`
+
+## Deployment
+
 ```bash
+# Compile
 npm run compile
-npm run test:contracts
+
+# Deploy to Arbitrum Sepolia
+ARB_SEPOLIA_RPC_URL="https://sepolia-rollup.arbitrum.io/rpc" \
+DEPLOYER_PRIVATE_KEY="0x..." \
 npm run deploy:arbitrum-sepolia
 ```
-
-## Onchain proofs (Arbitrum Sepolia)
-To verify the live demo, add the three transaction hashes:
-1. Client approves USDC spend on Arbitrum Sepolia: [INSERT_HASH_1_HERE]
-2. Client pays invoice (USDC transfer): [INSERT_HASH_2_HERE]
-3. Freelancer sends USDC to Bitso deposit address: [INSERT_HASH_3_HERE]
-
-## Tech stack
-- Network: Arbitrum Sepolia
-- Smart contract: Solidity
-- Frontend: Next.js, Tailwind CSS, Wagmi, viem, RainbowKit
-- AI parser: Anthropic Claude 3.5 Sonnet
-- Fiat off-ramp: Bitso API

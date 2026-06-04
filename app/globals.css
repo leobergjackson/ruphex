@@ -1,91 +1,98 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 220 20% 8%;
-    --foreground: 220 14% 96%;
-    --card: 220 20% 10%;
-    --card-foreground: 220 14% 96%;
-    --popover: 220 20% 10%;
-    --popover-foreground: 220 14% 96%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 220 20% 15%;
-    --secondary-foreground: 220 14% 96%;
-    --muted: 220 20% 15%;
-    --muted-foreground: 220 14% 65%;
-    --accent: 217 91% 60%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 20% 15%;
-    --input: 220 20% 15%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
-  }
+:root {
+  --font-jakarta: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-cream: #FFF9F0;
+  --color-primary: #FF6B6B;
+  --color-secondary: #FFD93D;
+  --color-ink: #2D2323;
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-    text-rendering: optimizeLegibility;
-    -webkit-text-size-adjust: 100%;
-  }
-
-  * {
-    border-color: hsl(var(--border));
-    box-sizing: border-box;
-  }
-
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-feature-settings: "rlig" 1, "calt" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-  }
-
-  /* Text selection */
-  ::selection {
-    background-color: hsl(var(--primary) / 0.25);
-    color: hsl(var(--foreground));
-  }
-
-  /* Global scrollbar */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 9999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.5);
-  }
-
-  /* Keyboard-only focus ring — invisible on mouse click */
-  :focus-visible {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-    border-radius: var(--radius);
-  }
-  :focus:not(:focus-visible) { outline: none; }
+body {
+  font-family: var(--font-jakarta);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
 }
 
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+::selection {
+  background-color: #FFD93D;
+  color: var(--color-ink);
 }
 
-.recording-pulse {
-  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-  animation: pulse 1.5s infinite cubic-bezier(0.66, 0, 0, 1);
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border: 2px solid var(--color-ink);
+  box-shadow: 4px 4px 0px var(--color-ink);
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-@keyframes pulse {
-  to {
-    box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
-  }
+.btn-primary:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-ink);
+}
+
+.btn-ghost {
+  background: #ffffff;
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  box-shadow: 4px 4px 0px var(--color-ink);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-ghost:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px var(--color-ink);
+}
+
+.module-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+  border: 2px solid var(--color-ink);
+  border-radius: 1rem;
+  box-shadow: 4px 4px 0px var(--color-ink);
+}
+
+.module-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--color-ink);
+}
+
+.grain {
+  position: relative;
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.badge-network {
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #FFD93D;
+  border: 2px solid var(--color-ink);
+  color: var(--color-ink);
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-accent {
+  color: var(--color-primary);
 }

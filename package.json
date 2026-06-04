@@ -13,10 +13,10 @@
     "deploy:arbitrum-sepolia": "hardhat run contracts/scripts/deploy.ts --config contracts/hardhat.config.ts --network arbitrumSepolia"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.100.1",
     "@pushprotocol/restapi": "^1.7.32",
     "@rainbow-me/rainbowkit": "^2.2.11",
     "@tanstack/react-query": "^5.100.14",
+    "ethers": "^5.7.2",
     "framer-motion": "^12.40.0",
     "groq-sdk": "^1.2.1",
     "lucide-react": "^1.17.0",
