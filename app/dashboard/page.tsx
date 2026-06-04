@@ -329,7 +329,7 @@ export default function Landing() {
                   border: '1px solid var(--border-accent)',
                 }}>
                   <p className="label-accent" style={{ marginBottom: '12px' }}>
-                    QR DE PAGO GENERADO
+                    PAYMENT QR GENERATED
                   </p>
                   <div style={{ background: '#FFFFFF', padding: '12px', borderRadius: '6px' }}>
                     <QRCodeSVG
@@ -342,7 +342,7 @@ export default function Landing() {
                     />
                   </div>
                   <p className="label" style={{ marginTop: '10px', textAlign: 'center' }}>
-                    TU CLIENTE PUEDE ESCANEAR ESTO DIRECTAMENTE
+                    YOUR CLIENT CAN SCAN THIS DIRECTLY
                   </p>
                 </div>
               )}
@@ -366,7 +366,7 @@ export default function Landing() {
           }}>
             <div>
               <p className="label-accent" style={{ marginBottom: '4px' }}>
-                NOTIFICACIONES DE PAGO
+                PAYMENT NOTIFICATIONS
               </p>
               <p style={{
                 fontFamily: 'var(--font-body)',
@@ -374,7 +374,7 @@ export default function Landing() {
                 color: 'var(--muted)',
                 lineHeight: 1.5,
               }}>
-                Recibe una notificación en tu wallet cuando te paguen
+                Get a notification in your wallet when you get paid
               </p>
             </div>
             <PushOptIn address={address} />

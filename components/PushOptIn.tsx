@@ -42,7 +42,7 @@ export default function PushOptIn({ address }: Props) {
 
   if (status === 'done') {
     return (
-      <span className="label-accent">ACTIVADO ✓</span>
+      <span className="label-accent">ENABLED ✓</span>
     );
   }
 
@@ -53,7 +53,7 @@ export default function PushOptIn({ address }: Props) {
       disabled={status === 'loading' || !CHANNEL_ADDRESS}
       style={{ height: '36px', fontSize: '12px', padding: '0 16px', whiteSpace: 'nowrap' }}
     >
-      {status === 'loading' ? 'Activando···' : status === 'error' ? 'Reintentar' : 'Activar →'}
+      {status === 'loading' ? 'Enabling···' : status === 'error' ? 'Retry' : 'Enable →'}
     </button>
   );
 }
