@@ -155,7 +155,7 @@ export default function BitsoPanel({ visible, amountDisplay }: BitsoPanelProps) 
         </div>
 
         <p style={{ color: 'var(--muted)', fontSize: '14px', lineHeight: 1.6, marginTop: '24px' }}>
-          Recibo no custodia fondos ni genera direcciones de depósito. La conversión a MXN y el retiro bancario se completan dentro de Bitso.
+          Ruphex no custodia fondos ni genera direcciones de depósito. La conversión a MXN y el retiro bancario se completan dentro de Bitso.
         </p>
       </div>
     </div>

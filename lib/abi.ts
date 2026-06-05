@@ -1,4 +1,4 @@
-export const reciboAbi = [
+export const ruphexAbi = [
   {
     inputs: [
       { name: 'invoiceId', type: 'bytes32' },

@@ -5,11 +5,11 @@ const USDC_ADDRESS =
 
 const { viem, networkName } = await network.create();
 
-console.log(`Deploying Recibo to ${networkName}...`);
+console.log(`Deploying Ruphex to ${networkName}...`);
 console.log(`USDC: ${USDC_ADDRESS}`);
 
-const recibo = await viem.deployContract("Recibo", [
+const ruphex = await viem.deployContract("Ruphex", [
   USDC_ADDRESS as `0x${string}`,
 ]);
 
-console.log("Recibo deployed to:", recibo.address);
+console.log("Ruphex deployed to:", ruphex.address);

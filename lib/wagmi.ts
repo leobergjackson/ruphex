@@ -5,10 +5,10 @@ import { http } from 'wagmi';
 const ARB_SEPOLIA_RPC_URL =
   process.env.NEXT_PUBLIC_ARB_SEPOLIA_RPC_URL ?? 'https://sepolia-rollup.arbitrum.io/rpc';
 const WALLETCONNECT_PROJECT_ID =
-  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'recibo-local-dev';
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'ruphex-local-dev';
 
 export const wagmiConfig = getDefaultConfig({
-  appName: 'Recibo',
+  appName: 'Ruphex',
   projectId: WALLETCONNECT_PROJECT_ID,
   chains: [arbitrumSepolia],
   transports: {

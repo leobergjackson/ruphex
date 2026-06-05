@@ -8,7 +8,7 @@ import {
 } from 'wagmi';
 import { keccak256, stringToBytes } from 'viem';
 import { decodeInvoice, InvoicePayload } from '@/lib/invoiceCodec';
-import { erc20Abi, reciboAbi } from '@/lib/abi';
+import { erc20Abi, ruphexAbi } from '@/lib/abi';
 import { CHAIN_ID, USDC_ADDRESS, CONTRACT_ADDRESS } from '@/lib/wagmi';
 import { QRCodeSVG } from 'qrcode.react';
 import Nav from '@/components/Nav';
@@ -45,7 +45,7 @@ export default function PayPage() {
   // On-chain paid status check
   const { data: onChainPaid, isLoading: isCheckingPaid } = useReadContract({
     address: CONTRACT_ADDRESS,
-    abi: reciboAbi,
+    abi: ruphexAbi,
     functionName: 'paid',
     args: invoice ? [invoiceIdToBytes32(invoice.id)] : undefined,
     query: { enabled: !!invoice && onCorrectChain },
@@ -162,7 +162,7 @@ export default function PayPage() {
     try {
       const hash = await writePay({
         address: CONTRACT_ADDRESS,
-        abi: reciboAbi,
+        abi: ruphexAbi,
         functionName: 'payInvoice',
         args: [invoiceIdToBytes32(invoice.id), invoice.to as `0x${string}`, amountBig],
       });
@@ -246,7 +246,7 @@ export default function PayPage() {
         {/* Invoice card */}
         <div style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--r-card)', padding: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-            <span className="label">RECIBO DE PAGO</span>
+            <span className="label">RUPHEX DE PAGO</span>
             <span className="mono" style={{ color: 'var(--faint)', fontSize: '11px' }}>
               INV-{invoice.id.slice(0, 8).toUpperCase()}
             </span>
@@ -352,7 +352,7 @@ export default function PayPage() {
           <StepRow
             number="02"
             label="CONFIRMAR PAGO"
-            sublabel="El USDC se transfiere directo a la wallet del freelancer. El contrato emite un evento como recibo permanente."
+            sublabel="El USDC se transfiere directo a la wallet del freelancer. El contrato emite un evento como ruphex permanente."
             status={step2Status}
             disabled={step1Status !== 'complete'}
           />

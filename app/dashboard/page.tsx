@@ -12,6 +12,9 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import GoogleTranslate from '@/components/GoogleTranslate';
 import { QRCodeSVG } from 'qrcode.react';
 import PushOptIn from '@/components/PushOptIn';
+import AgentAuthModal from '@/components/AgentAuthModal';
+import AgentIdentityBadge from '@/components/AgentIdentityBadge';
+import AgentAuditTrail, { AuditEvent } from '@/components/AgentAuditTrail';
 
 export default function Landing() {
   const [invoiceText, setInvoiceText] = useState('');
@@ -22,6 +25,15 @@ export default function Landing() {
   const [amountUSD, setAmountUSD] = useState(0);
   const [description, setDescription] = useState('');
   const [url, setUrl] = useState('');
+  
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAgentAuthorized, setIsAgentAuthorized] = useState(false);
+  const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
+  
+  const addAuditEvent = useCallback((action: string, isCompleted: boolean = true) => {
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setAuditEvents(prev => [...prev, { time, action, isCompleted }]);
+  }, []);
 
   const [isRecording, setIsRecording] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
@@ -50,6 +62,8 @@ export default function Landing() {
       const data = await res.json();
       
       if (!res.ok) throw new Error(data.error || 'Parse failed');
+      
+      addAuditEvent('Agent parsed invoice');
       
       const parsedClient = data.clientName || 'Unknown Client';
       const parsedAmount = parseFloat(data.amountUSD) || 0;
@@ -91,9 +105,18 @@ export default function Landing() {
         paymentURL: link,
       });
       
+      addAuditEvent('Agent created invoice');
+      
       setUrl(link);
       setStep(2);
       toast.success('Smart link generated successfully!');
+      
+      // Simulate autonomous monitoring
+      setTimeout(() => {
+        addAuditEvent('Client paid (Simulated)');
+        addAuditEvent('Agent generated receipt');
+        toast.success('Agent detected payment and generated receipt!');
+      }, 8000);
       
     } catch (err: any) {
       toast.error(err.message || 'An error occurred during generation.');
@@ -177,14 +200,43 @@ export default function Landing() {
     toast.success('Payment link copied to clipboard!');
   }, [url]);
 
+  const handleGenerateClick = () => {
+    if (!invoiceText.trim()) {
+      toast.error('Please paste some invoice details first.');
+      return;
+    }
+    if (!address) {
+      toast.error('Please connect your wallet first.');
+      return;
+    }
+    if (!isAgentAuthorized) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    handleGenerate();
+  };
+
+  const handleAuthorizeAgent = () => {
+    setIsAgentAuthorized(true);
+    setIsAuthModalOpen(false);
+    addAuditEvent('User authorized agent');
+    toast.success('Invoice Agent Authorized');
+    handleGenerate(); // Auto proceed
+  };
+
   return (
     <main className="grain min-h-screen flex flex-col font-[var(--font-jakarta)] relative text-stone-900 bg-[#FFF9F0]">
+      <AgentAuthModal 
+        isOpen={isAuthModalOpen} 
+        onAuthorize={handleAuthorizeAgent} 
+        onCancel={() => setIsAuthModalOpen(false)} 
+      />
       <nav className="flex items-center justify-between px-6 py-4 relative z-10 w-full max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
           <div className="w-8 h-8 rounded-lg bg-[#FF6B6B] border-2 border-stone-900 flex items-center justify-center text-white shadow-[2px_2px_0px_#2D2323]">
             R
           </div>
-          Recibo
+          Ruphex
         </Link>
         <div className="flex items-center gap-4">
           <GoogleTranslate />
@@ -264,7 +316,7 @@ export default function Landing() {
               </div>
               
               <button 
-                onClick={handleGenerate}
+                onClick={handleGenerateClick}
                 disabled={isGenerating || !address}
                 className="btn-primary w-full py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_#2D2323]"
               >
@@ -274,6 +326,7 @@ export default function Landing() {
             </div>
           ) : (
             <div className="flex flex-col gap-6">
+              <AgentIdentityBadge />
               <div className="flex items-center justify-between border-b-2 border-stone-900/10 pb-4">
                 <div className="flex flex-col">
                   <span className="text-sm text-stone-900/60 uppercase tracking-wider font-semibold mb-1">Receipt for</span>
@@ -346,6 +399,8 @@ export default function Landing() {
                   </p>
                 </div>
               )}
+              
+              <AgentAuditTrail events={auditEvents} />
             </div>
           )}
         </div>

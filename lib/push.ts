@@ -2,8 +2,8 @@ import * as PushAPI from '@pushprotocol/restapi';
 import { ethers } from 'ethers';
 import { ENV } from '@pushprotocol/restapi/src/lib/constants';
 
-// Recibo's channel signer — this is a throwaway wallet used only
-// to sign notifications on behalf of the Recibo channel.
+// Ruphex's channel signer — this is a throwaway wallet used only
+// to sign notifications on behalf of the Ruphex channel.
 // In production this would be a dedicated channel wallet.
 // For the hackathon demo, generate a fresh wallet and use its private key.
 
@@ -31,7 +31,7 @@ export async function notifyPaymentReceived(params: NotifyPaymentParams): Promis
       type: 3, // targeted notification to one wallet
       identityType: 2, // direct payload
       notification: {
-        title: `Recibo: Pago recibido ✓`,
+        title: `Ruphex: Pago recibido ✓`,
         body: `${params.amountDisplay} USDC por "${params.description}"`,
       },
       payload: {

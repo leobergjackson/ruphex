@@ -81,8 +81,8 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-[clamp(48px,6vw,80px)] font-bold leading-[1.05] tracking-tight mb-6"
           >
-            Get Paid in USDC,<br />
-            <span className="text-accent">Instantly.</span>
+            Autonomous invoicing powered by<br />
+            <span className="text-accent">trusted AI agents.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-stone-900/70 mb-8 max-w-lg leading-relaxed"
           >
-            Turn any client email or PDF into an instant crypto payment link. No banks, no 8% fees. Parse, generate, and off-ramp to local fiat in seconds.
+            Create invoices, monitor blockchain payments, and generate receipts through an AI agent operating with verifiable identity and delegated permissions.
           </motion.p>
           
           <motion.div
@@ -180,7 +180,7 @@ const Stats = () => {
   return (
     <section className="py-24 px-6 max-w-7xl mx-auto">
       <div className="grid md:grid-cols-3 gap-16 justify-items-center md:justify-items-start">
-        <CountUp to="0%" label="Transaction Fees taken by Recibo" />
+        <CountUp to="0%" label="Transaction Fees taken by Ruphex" />
         <CountUp to="< 3s" label="Average settlement time on Arbitrum" />
         <CountUp to="100%" label="Non-custodial & Permissionless" />
       </div>
@@ -211,7 +211,7 @@ const Tools = () => {
     <section className="py-24 px-6 max-w-7xl mx-auto">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Three steps. <span className="text-accent">One seamless flow.</span></h2>
-        <p className="text-lg text-stone-900/60 max-w-2xl mx-auto">Stop bouncing between platforms. Recibo unifies invoicing, crypto settlement, and fiat off-ramping into a single interface.</p>
+        <p className="text-lg text-stone-900/60 max-w-2xl mx-auto">Stop bouncing between platforms. Ruphex unifies invoicing, crypto settlement, and fiat off-ramping into a single interface.</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
@@ -248,7 +248,7 @@ const Features = () => {
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <div className="lg:sticky top-32">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-6">
-            Why freelancers choose Recibo.
+            Why freelancers choose Ruphex.
           </h2>
           <p className="text-xl text-stone-900/70 max-w-md">
             Stop losing 8% to PayPal and waiting 5 business days for wire transfers. It's your money, you should keep all of it.
@@ -385,11 +385,11 @@ export default function MarketingLanding() {
           <div className="w-8 h-8 rounded-lg bg-[#FF6B6B] border-2 border-stone-900 flex items-center justify-center text-white shadow-[2px_2px_0px_#2D2323]">
             R
           </div>
-          Recibo
+          Ruphex
         </Link>
         <div className="flex items-center gap-4">
           <GoogleTranslate />
-          <button className="hidden md:block font-semibold text-sm hover:text-[#FF6B6B] transition-colors">Docs</button>
+          <Link href="/credentials" className="hidden md:block font-semibold text-sm hover:text-[#FF6B6B] transition-colors">Agent Credentials</Link>
           <Link href="/dashboard" className="btn-ghost px-5 py-2.5 rounded-full font-semibold text-sm">
             App
           </Link>

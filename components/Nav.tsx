@@ -43,7 +43,7 @@ export default function Nav() {
           <path d="M15.2 17L16.4 18.2L18.8 15.8" stroke="#000" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
         <span style={{ fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff' }}>
-          Recibo
+          Ruphex
         </span>
       </Link>
 

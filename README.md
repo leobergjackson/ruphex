@@ -1,13 +1,64 @@
-# Recibo
+# Ruphex — Trusted Invoice Agent powered by Terminal 3
 
-Recibo is an AI-powered USDC payment gateway for LATAM freelancers, built for the **Ethereum Mexico 2026** hackathon. It streamlines the entire workflow from receiving a client email to off-ramping funds into a Mexican bank account.
+Ruphex is an autonomous invoice agent with verifiable identity for LATAM freelancers, built for the **Terminal 3 Agent Dev Kit Bounty Challenge**. It streamlines the entire workflow from receiving a client email to off-ramping funds into a Mexican bank account, using Terminal 3 Agent Auth to act securely on the user's behalf.
+
+## Architecture & Flow
+
+```text
+Freelancer
+     │
+     ▼
+Terminal 3 Authorization
+     │
+     ▼
+Ruphex Invoice Agent
+     │
+ ┌───┼─────────────┐
+ │   │             │
+ ▼   ▼             ▼
+Parse Invoice  Monitor Chain  Generate Receipt
+ │   │             │
+ └───┴─────────────┘
+         │
+         ▼
+     Audit Trail
+```
 
 ## One Demo Path
 1. **AI Parse:** Paste raw invoice text (email, PDF dump). Groq extracts metadata and amounts.
-2. **Smart Link:** Generate a cryptographically encoded payment URL (no database).
-3. **On-Chain Settlement:** Client pays in USDC on Arbitrum Sepolia.
-4. **Verified Proof:** Real-time on-chain event detection and transaction receipts.
-5. **Direct Off-Ramp:** Integrated instructions for withdrawing to MXN via Bitso.
+2. **Terminal 3 Authorization:** User grants the AI agent specific delegated permissions.
+3. **Smart Link:** Agent generates a cryptographically encoded payment URL (no database).
+4. **On-Chain Settlement:** Client pays in USDC on Arbitrum Sepolia.
+5. **Verified Proof:** Agent autonomously monitors on-chain events and generates a transaction receipt.
+
+## Terminal 3 Integration
+
+Ruphex uses Terminal 3 concepts to provide:
+
+- **Verifiable Agent Identity**
+- **Delegated User Permissions**
+- **Autonomous Workflow Execution**
+- **Auditability of Agent Actions**
+- **Trusted Agent Credentials**
+
+*Without Terminal 3, an AI agent cannot prove it is authorized to act on behalf of a freelancer.*
+
+## Screenshots
+
+*Judges: Please see below for the complete visual flow of the Trusted Agent integration.*
+
+1. **Homepage**
+   ![Homepage](./public/screenshot-home.png)
+2. **Agent Authorization Modal**
+   ![Agent Authorization Modal](./public/screenshot-auth.png)
+3. **Agent Credentials Page**
+   ![Agent Credentials Page](./public/screenshot-credentials.png)
+4. **Invoice Creation**
+   ![Invoice Creation](./public/screenshot-invoice.png)
+5. **Audit Trail**
+   ![Audit Trail](./public/screenshot-audit.png)
+6. **Payment Confirmation**
+   ![Payment Confirmation](./public/screenshot-payment.png)
 
 ## Tech Stack
 - **AI:** Groq Cloud (Parsing & Data Extraction)
@@ -31,7 +82,7 @@ Recibo is an AI-powered USDC payment gateway for LATAM freelancers, built for th
 2. **Pay Invoice:** [Insert your Hash 2]
 3. **Pay Invoice (Repeat):** [Insert your Hash 3]
 
-*The Recibo contract at `0x563249FfE1783050D95A2dc70fE549909b4D09a8` emits the `InvoicePaid` event.*
+*The Ruphex contract at `0x563249FfE1783050D95A2dc70fE549909b4D09a8` emits the `InvoicePaid` event.*
 
 **Contract Deployment:** `0x0217eed43d9641f5255c032a544c0bffce7f6698448f1aa919a6929a8497cf61`
 

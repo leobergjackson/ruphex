@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import {Recibo} from "../Recibo.sol";
+import {Ruphex} from "../Ruphex.sol";
 
-/// @dev Simulates a token that reenters Recibo during transferFrom.
+/// @dev Simulates a token that reenters Ruphex during transferFrom.
 contract ReentrantToken {
     mapping(address => mapping(address => uint256)) public allowance;
     mapping(address => uint256) public balanceOf;
 
-    Recibo public target;
+    Ruphex public target;
     bytes32 public reenterInvoiceId;
     address public reenterFreelancer;
     uint256 public reenterAmount;
@@ -24,7 +24,7 @@ contract ReentrantToken {
     }
 
     function configureReenter(
-        Recibo _target,
+        Ruphex _target,
         bytes32 invoiceId,
         address freelancer,
         uint256 amount

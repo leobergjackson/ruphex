@@ -1,6 +1,6 @@
-# Recibo × RARE Protocol — Provenance for LATAM creators
+# Ruphex × RARE Protocol — Provenance for LATAM creators
 
-BUIDL the receipt rail that turns every LATAM freelancer payment into ownable, on-chain provenance. When a creator in México City, Bogotá, or São Paulo gets paid in USDC, Recibo settles the money on **Arbitrum** and mints the receipt as a **RARE Protocol** NFT — a 1/1 "Recibo" that proves the payment *and* gives the delivered work permanent provenance on the network creators already trust.
+BUIDL the receipt rail that turns every LATAM freelancer payment into ownable, on-chain provenance. When a creator in México City, Bogotá, or São Paulo gets paid in USDC, Ruphex settles the money on **Arbitrum** and mints the receipt as a **RARE Protocol** NFT — a 1/1 "Ruphex" that proves the payment *and* gives the delivered work permanent provenance on the network creators already trust.
 
 ## Why two chains
 
@@ -23,8 +23,8 @@ rare configure --chain sepolia --private-key 0xYOUR_KEY
 rare wallet generate --chain sepolia --save
 rare wallet address --chain sepolia      # fund this with Sepolia ETH
 
-# Deploy the collection that holds every Recibo (do this once)
-rare collection deploy erc721 "Recibo LATAM" "RCB" --chain sepolia
+# Deploy the collection that holds every Ruphex (do this once)
+rare collection deploy erc721 "Ruphex LATAM" "RCB" --chain sepolia
 # -> copy the deployed address into .env.local as RARE_COLLECTION_ADDRESS
 ```
 
@@ -56,7 +56,7 @@ Under the hood this builds RARE metadata in [`lib/rare.ts`](lib/rare.ts) and she
 
 ```bash
 rare collection mint --chain sepolia --contract $RARE_COLLECTION_ADDRESS \
-  --name "Recibo RCB-2026-014" \
+  --name "Ruphex RCB-2026-014" \
   --description "On-chain proof of payment for a LATAM creator (MX)…" \
   --attribute "Amount (USDC)=700" --attribute "Payment Network=Arbitrum Sepolia" …
 ```

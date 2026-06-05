@@ -2,7 +2,7 @@
  * USDC on Arbitrum Sepolia — the payment rail for LATAM creators.
  *
  * Clients pay invoices in USDC here (sub-cent fees, instant finality); the settled
- * payment is then minted as a Recibo on the RARE Protocol (see lib/rare.ts).
+ * payment is then minted as a Ruphex on the RARE Protocol (see lib/rare.ts).
  */
 import { arbitrumSepolia } from "viem/chains";
 

@@ -14,7 +14,7 @@ export interface FullInvoice {
   approveTxHash?: string;
 }
 
-const KEY = (id: string) => `recibo_inv_${id}`;
+const KEY = (id: string) => `ruphex_inv_${id}`;
 
 export const saveInvoice = (inv: FullInvoice) => {
   if (typeof window === 'undefined') return;
@@ -31,7 +31,7 @@ export const listInvoices = (): FullInvoice[] => {
   const items: FullInvoice[] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
-    if (k && k.startsWith('recibo_inv_')) {
+    if (k && k.startsWith('ruphex_inv_')) {
       try {
         const v = localStorage.getItem(k);
         if (v) items.push(JSON.parse(v));

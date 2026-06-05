@@ -1,7 +1,7 @@
 /**
- * Mint a settled Recibo invoice as a RARE Protocol NFT.
+ * Mint a settled Ruphex invoice as a RARE Protocol NFT.
  *
- * Recibo is the receipt rail for LATAM creators: once a USDC invoice settles on Arbitrum,
+ * Ruphex is the receipt rail for LATAM creators: once a USDC invoice settles on Arbitrum,
  * this script mints the proof-of-payment + work provenance on the RARE Protocol via the
  * official RARE CLI (`@rareprotocol/rare-cli`). See RARE.md for the full walkthrough.
  *
@@ -13,7 +13,7 @@
  * Requires a one-time setup (see RARE.md):
  *   npm i -g @rareprotocol/rare-cli
  *   rare configure --chain sepolia --private-key 0x...
- *   rare collection deploy erc721 "Recibo LATAM" "RCB" --chain sepolia   # -> RARE_COLLECTION_ADDRESS
+ *   rare collection deploy erc721 "Ruphex LATAM" "RCB" --chain sepolia   # -> RARE_COLLECTION_ADDRESS
  *
  * Env:
  *   RARE_COLLECTION_ADDRESS   RARE collection to mint into (required unless --contract passed)
@@ -23,7 +23,7 @@
 
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { buildMintArgs, buildReciboMetadata, type PaidInvoice } from "../lib/rare";
+import { buildMintArgs, buildRuphexMetadata, type PaidInvoice } from "../lib/rare";
 
 function parseFlags(argv: string[]): Record<string, string> {
   const out: Record<string, string> = {};
@@ -76,15 +76,15 @@ function main() {
   if (!contract) {
     console.error(
       "No RARE collection address. Set RARE_COLLECTION_ADDRESS or pass --contract 0x...\n" +
-        'Deploy one with: rare collection deploy erc721 "Recibo LATAM" "RCB" --chain sepolia',
+        'Deploy one with: rare collection deploy erc721 "Ruphex LATAM" "RCB" --chain sepolia',
     );
     process.exit(1);
   }
 
-  const meta = buildReciboMetadata(invoice);
+  const meta = buildRuphexMetadata(invoice);
   const args = buildMintArgs(invoice, contract);
 
-  console.log(`\n🇲🇽  Recibo → RARE Protocol`);
+  console.log(`\n🇲🇽  Ruphex → RARE Protocol`);
   console.log(`    ${meta.name}: ${invoice.amountUSDC} USDC for "${invoice.description}"`);
   console.log(`    Payment (Arbitrum Sepolia): ${invoice.paymentTxHash}`);
   console.log(`    Minting provenance on RARE (${process.env.RARE_CHAIN ?? "sepolia"})…\n`);

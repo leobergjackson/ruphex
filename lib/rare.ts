@@ -1,9 +1,9 @@
 /**
- * RARE Protocol integration for Recibo.
+ * RARE Protocol integration for Ruphex.
  *
- * Recibo is the receipt rail for LATAM creators: a freelancer in Bogotá, México City,
+ * Ruphex is the receipt rail for LATAM creators: a freelancer in Bogotá, México City,
  * or Buenos Aires gets paid in USDC on Arbitrum, and the settled payment is then minted
- * as a "Recibo" on the RARE Protocol — a 1/1 proof-of-payment NFT that doubles as
+ * as a "Ruphex" on the RARE Protocol — a 1/1 proof-of-payment NFT that doubles as
  * on-chain provenance for the creative work they delivered.
  *
  * Two chains, one story:
@@ -16,11 +16,11 @@
  * `scripts/rare-mint.ts` CLI (see RARE.md) and is import-safe for the web app.
  */
 
-/** A settled USDC invoice, as produced when a LATAM freelancer is paid through Recibo. */
+/** A settled USDC invoice, as produced when a LATAM freelancer is paid through Ruphex. */
 export interface PaidInvoice {
   /** Human invoice reference, e.g. "RCB-2026-014". */
   reference: string;
-  /** What was delivered — the creative work this Recibo gives provenance to. */
+  /** What was delivered — the creative work this Ruphex gives provenance to. */
   description: string;
   /** Amount paid, in USDC (whole units, e.g. 700 for 700 USDC). */
   amountUSDC: number;
@@ -45,7 +45,7 @@ export interface MetadataAttribute {
 }
 
 /** Standard NFT metadata, shaped for the RARE Protocol. */
-export interface ReciboMetadata {
+export interface RuphexMetadata {
   name: string;
   description: string;
   attributes: MetadataAttribute[];
@@ -63,12 +63,12 @@ function short(hash: string): string {
  * Build RARE NFT metadata for a settled invoice.
  * The description leads with the LATAM creator story so the provenance reads well on RARE.
  */
-export function buildReciboMetadata(invoice: PaidInvoice): ReciboMetadata {
+export function buildRuphexMetadata(invoice: PaidInvoice): RuphexMetadata {
   const settledAt = invoice.settledAt ?? new Date().toISOString();
   const region = invoice.country ? ` (${invoice.country})` : "";
 
   return {
-    name: `Recibo ${invoice.reference}`,
+    name: `Ruphex ${invoice.reference}`,
     description:
       `On-chain proof of payment for a LATAM creator${region}. ` +
       `${invoice.amountUSDC} USDC settled on Arbitrum for "${invoice.description}", ` +
@@ -96,7 +96,7 @@ export function buildReciboMetadata(invoice: PaidInvoice): ReciboMetadata {
  * @param contract the RARE collection address to mint into (from `rare collection deploy`)
  */
 export function buildMintArgs(invoice: PaidInvoice, contract: string): string[] {
-  const meta = buildReciboMetadata(invoice);
+  const meta = buildRuphexMetadata(invoice);
   const args = [
     "collection",
     "mint",

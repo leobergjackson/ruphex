@@ -2,7 +2,7 @@
  * Capture the real on-chain proofs for the README, end to end.
  *
  *   1. Sends a real USDC transfer on Arbitrum Sepolia (the "client pays creator" proof).
- *   2. Mints the Recibo provenance NFT on the RARE Protocol via the RARE CLI (if configured).
+ *   2. Mints the Ruphex provenance NFT on the RARE Protocol via the RARE CLI (if configured).
  *
  * Prints both tx hashes ready to paste into README.md — no faked output.
  *
@@ -43,7 +43,7 @@ async function main() {
   const wallet = createWalletClient({ account, chain: arbitrumSepolia, transport: http(rpc) });
   const pub = createPublicClient({ chain: arbitrumSepolia, transport: http(rpc) });
 
-  console.log(`\n🇲🇽  Recibo on-chain proof`);
+  console.log(`\n🇲🇽  Ruphex on-chain proof`);
   console.log(`    Payer:   ${account.address}`);
   console.log(`    Creator: ${recipient}`);
   console.log(`    Amount:  ${amount} USDC on Arbitrum Sepolia\n`);
@@ -63,14 +63,14 @@ async function main() {
   const collection = process.env.RARE_COLLECTION_ADDRESS;
   if (!collection) {
     console.log('RARE_COLLECTION_ADDRESS not set — skipping provenance mint.');
-    console.log('Deploy one: rare collection deploy erc721 "Recibo LATAM" "RCB" --chain sepolia\n');
+    console.log('Deploy one: rare collection deploy erc721 "Ruphex LATAM" "RCB" --chain sepolia\n');
     printReadme(paymentTxHash, null);
     return;
   }
 
   const invoice: PaidInvoice = {
     reference: `RCB-${new Date().getFullYear()}-PROOF`,
-    description: 'Recibo on-chain proof — LATAM creator payment',
+    description: 'Ruphex on-chain proof — LATAM creator payment',
     amountUSDC: Number(amount),
     freelancer: recipient,
     client: account.address,
@@ -90,7 +90,7 @@ async function main() {
 function printReadme(paymentTx: string, rareTx: string | null) {
   console.log('── Paste into README.md ──────────────────────────────');
   console.log(`1. Client pays creator — USDC transfer (Arbitrum Sepolia): ${paymentTx}`);
-  console.log(`2. Recibo minted on RARE Protocol (Ethereum Sepolia): ${rareTx ?? '[run with RARE_COLLECTION_ADDRESS]'}`);
+  console.log(`2. Ruphex minted on RARE Protocol (Ethereum Sepolia): ${rareTx ?? '[run with RARE_COLLECTION_ADDRESS]'}`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

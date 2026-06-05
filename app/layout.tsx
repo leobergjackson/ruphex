@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Recibo — AI-Powered Payments for LATAM',
+  title: 'Ruphex — AI-Powered Payments for LATAM',
   description: 'Get Paid in USDC, Instantly. No banks, no 8% fees.',
 };
 

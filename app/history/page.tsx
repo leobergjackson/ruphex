@@ -34,7 +34,7 @@ export default function HistoryPage() {
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '120px 24px 96px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: '16px', marginBottom: '40px' }}>
           <div>
-            <p className="label" style={{ marginBottom: '8px' }}>RECIBO · /HISTORY</p>
+            <p className="label" style={{ marginBottom: '8px' }}>RUPHEX · /HISTORY</p>
             <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '32px', fontWeight: 700, letterSpacing: '-0.01em' }}>
               Mis facturas
             </h1>
