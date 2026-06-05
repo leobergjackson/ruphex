@@ -4,91 +4,111 @@
   --font-jakarta: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* ── Yellow-glass palette ───────────────────────────────── */
-  --color-cream: #FFFDF2;
-  --color-primary: #D97706;          /* warm amber (replaces coral accent) */
-  --color-secondary: #FACC15;
-  --color-ink: #4A3B12;              /* warm dark for borders/text */
+  /* ── Terminal 3 dark-blue glass palette ─────────────────── */
+  --color-cream: #070D18;
+  --color-primary: #3BA4F2;          /* electric blue accent (replaces coral) */
+  --color-secondary: #1E78DC;
+  --color-ink: #cfe0f5;              /* light ink for text */
 
-  /* Glass tokens */
-  --glass-bg: rgba(255, 250, 224, 0.45);
-  --glass-bg-strong: rgba(255, 248, 210, 0.62);
-  --glass-border: rgba(234, 179, 8, 0.38);
-  --glass-shadow: 0 10px 30px rgba(202, 138, 4, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  --glass-blur: blur(14px) saturate(150%);
+  /* Flip Tailwind's stone-900 to a light value so every
+     text/bg/border-stone-900(/opacity) utility reads on dark. */
+  --color-stone-900: #e6eefb;
+
+  /* Glass tokens (dark) */
+  --glass-bg: rgba(16, 27, 47, 0.55);
+  --glass-bg-strong: rgba(20, 34, 58, 0.70);
+  --glass-border: rgba(96, 165, 245, 0.30);
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(120, 180, 255, 0.14);
+  --glass-blur: blur(14px) saturate(140%);
+}
+
+html {
+  background-color: #070D18;
 }
 
 body {
   font-family: var(--font-jakarta);
-  color: #3B2F0B;
+  color: #dbe6f5;
   min-height: 100vh;
-  background:
-    radial-gradient(1100px 600px at 12% -10%, rgba(253, 224, 71, 0.55), transparent 60%),
-    radial-gradient(900px 700px at 100% 5%, rgba(251, 191, 36, 0.40), transparent 55%),
-    linear-gradient(160deg, #FFFDF2 0%, #FFF6D6 48%, #FCE9A6 100%);
+  background-color: #070D18;
+  background-image:
+    radial-gradient(900px 520px at 88% -8%, rgba(56, 170, 255, 0.40), transparent 55%),
+    radial-gradient(720px 520px at 10% 112%, rgba(40, 130, 230, 0.30), transparent 55%),
+    linear-gradient(165deg, #060A14 0%, #08111F 45%, #0A1A30 100%);
   background-attachment: fixed;
 }
 
-/* Paint the same warm-yellow base on every page <main> wrapper
-   (they all carry the old cream `bg-[#FFF9F0]`). */
+/* Paint the same dark-blue base on every page <main> wrapper
+   (they all still carry the old `bg-[#FFF9F0]`). */
 main[class*="bg-[#FFF9F0]"] {
-  background:
-    radial-gradient(1100px 600px at 12% -10%, rgba(253, 224, 71, 0.55), transparent 60%),
-    radial-gradient(900px 700px at 100% 5%, rgba(251, 191, 36, 0.40), transparent 55%),
-    linear-gradient(160deg, #FFFDF2 0%, #FFF6D6 48%, #FCE9A6 100%) !important;
+  background-color: #070D18 !important;
+  background-image:
+    radial-gradient(900px 520px at 88% -8%, rgba(56, 170, 255, 0.40), transparent 55%),
+    radial-gradient(720px 520px at 10% 112%, rgba(40, 130, 230, 0.30), transparent 55%),
+    linear-gradient(165deg, #060A14 0%, #08111F 45%, #0A1A30 100%) !important;
   background-attachment: fixed;
 }
 
 ::selection {
-  background-color: #FACC15;
-  color: #3B2F0B;
+  background-color: #2E9BF0;
+  color: #ffffff;
 }
 
-/* ── GLASS: every brutalist-shadowed surface becomes frosted ──
-   Catches all `shadow-[…px_…px_0px_#2D2323]` utilities used inline
-   across the pages/components and turns the hard ink shadow into a
-   soft golden glow with a backdrop blur. */
+/* ── Readable text on dark — guaranteed regardless of how the
+   stone-900 variable resolves. ───────────────────────────── */
+[class~="text-stone-900"]        { color: #eaf1fb !important; }
+[class*="text-stone-900/7"]      { color: rgba(224, 234, 248, 0.82) !important; } /* /70 */
+[class*="text-stone-900/6"]      { color: rgba(216, 228, 245, 0.74) !important; } /* /60 /65 */
+[class*="text-stone-900/5"]      { color: rgba(202, 217, 239, 0.62) !important; } /* /50 */
+[class*="text-stone-900/4"]      { color: rgba(186, 204, 229, 0.52) !important; } /* /40 */
+
+/* ── GLASS: every brutalist-shadowed surface becomes dark frosted ──
+   Catches all `shadow-[…px_…px_0px_#2D2323]` utilities used inline. */
 [class*="_0px_#2D2323"] {
   box-shadow: var(--glass-shadow) !important;
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
 }
 
-/* Soften the hard ink borders into translucent gold (full borders only,
-   leaving the subtle /10 /5 dividers untouched). */
+/* Soften full ink borders into translucent blue (leave /10 /5 dividers). */
 [class~="border-stone-900"] {
   border-color: var(--glass-border) !important;
 }
 
-/* Make the solid surfaces translucent so the blur reads as real glass. */
+/* Solid light surfaces → dark glass so the blur reads. */
 [class~="bg-white"],
 [class~="bg-amber-50"],
-[class~="bg-stone-50"] {
+[class~="bg-stone-50"],
+[class~="bg-stone-100"] {
   background-color: var(--glass-bg) !important;
 }
-[class~="bg-yellow-400"] {
-  background-color: rgba(250, 204, 21, 0.55) !important;
+
+/* Yellow tints → blue tints. */
+[class*="bg-yellow-400"] {
+  background-color: rgba(46, 155, 240, 0.18) !important;
 }
 [class*="bg-[#FFF9F0]/80"] {
-  background-color: rgba(255, 250, 224, 0.55) !important;
+  background-color: rgba(8, 16, 30, 0.78) !important;
 }
 
-/* Fold the coral accent into the yellow family (amber). */
+/* Coral / amber accents → electric blue. */
 [class*="bg-[#FF6B6B]"],
 [class*="bg-[#FF8A65]"] {
   background-color: var(--color-primary) !important;
 }
 [class*="text-[#FF6B6B]"],
+[class*="text-[#FF8A65]"],
+[class*="text-yellow-500"],
 .text-accent {
   color: var(--color-primary) !important;
 }
 
-/* ── Shared component classes, redefined as glass ──────────── */
+/* ── Shared component classes, redefined as dark-blue glass ── */
 .btn-primary {
-  background: linear-gradient(135deg, rgba(250, 204, 21, 0.95), rgba(217, 119, 6, 0.92));
-  color: #2A2207;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  box-shadow: var(--glass-shadow);
+  background: linear-gradient(135deg, rgba(59, 164, 242, 0.95), rgba(30, 120, 220, 0.92));
+  color: #ffffff;
+  border: 1px solid rgba(125, 195, 255, 0.45);
+  box-shadow: 0 10px 30px rgba(20, 110, 210, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   transition: transform 0.15s, box-shadow 0.15s;
@@ -96,12 +116,12 @@ main[class*="bg-[#FFF9F0]"] {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(202, 138, 4, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: 0 16px 42px rgba(30, 130, 230, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .btn-ghost {
   background: var(--glass-bg-strong);
-  color: #3B2F0B;
+  color: #e6eefb;
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
@@ -111,7 +131,7 @@ main[class*="bg-[#FFF9F0]"] {
 
 .btn-ghost:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 40px rgba(202, 138, 4, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: 0 16px 40px rgba(20, 90, 180, 0.35), inset 0 1px 0 rgba(120, 180, 255, 0.18);
 }
 
 .module-card {
@@ -126,7 +146,8 @@ main[class*="bg-[#FFF9F0]"] {
 
 .module-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 48px rgba(202, 138, 4, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(120, 180, 255, 0.20);
+  border-color: rgba(96, 165, 245, 0.45);
 }
 
 .badge-network {
@@ -135,7 +156,7 @@ main[class*="bg-[#FFF9F0]"] {
   font-weight: 600;
   background: var(--glass-bg-strong);
   border: 1px solid var(--glass-border);
-  color: #3B2F0B;
+  color: #e6eefb;
   padding: 0.25rem 0.75rem;
   display: inline-flex;
   align-items: center;
@@ -150,18 +171,18 @@ main[class*="bg-[#FFF9F0]"] {
   letter-spacing: -0.02em;
 }
 
-/* Keep a whisper of grain texture, but clean enough to read as glass. */
 .grain {
   position: relative;
 }
 
+/* Subtle texture; on the dark base it stays barely-there. */
 .grain::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.05;
-  mix-blend-mode: multiply;
+  opacity: 0.04;
+  mix-blend-mode: screen;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
