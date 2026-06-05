@@ -418,15 +418,12 @@ export default function MarketingLanding() {
       {/* Footer */}
       <footer className="py-12 px-6 text-stone-900/60 text-xs md:text-sm border-t-2 border-stone-900 max-w-7xl mx-auto text-center flex flex-col gap-6">
         <div className="font-semibold text-stone-900 flex flex-col gap-1">
-          <p>© {new Date().getFullYear()}</p>
-          <p>vsrupeshkumar (Blockchain engineer/Quantum researcher)</p>
-          <p>Anand (Full-stack developer/Back-end developer/Smart contract engineer)</p>
-          <p>Mansi (Full-stack developer/Blockchain engineer/UI engineer)</p>
+          <p>© {new Date().getFullYear()} vsrupeshkumar (Blockchain Engineer / Quantum Researcher)</p>
           <p>All Rights Reserved.</p>
         </div>
         
         <p className="leading-relaxed max-w-4xl mx-auto">
-          This platform, including its source code, system architecture, infrastructure design, backend systems, frontend implementation, APIs, databases, UI/UX, production workflows, and all related intellectual property, was designed and developed by the team: vsrupeshkumar, anand & mansi as Architect, System Designer, Frontend Developer, Backend Developer, and Production Engineer.
+          This platform, including its source code, system architecture, infrastructure design, backend systems, frontend implementation, APIs, databases, UI/UX, production workflows, and all related intellectual property, was solely designed and developed by vsrupeshkumar as Architect, System Designer, Frontend Developer, Backend Developer, and Production Engineer.
         </p>
 
         <p className="leading-relaxed max-w-4xl mx-auto">
