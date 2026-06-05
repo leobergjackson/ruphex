@@ -3,62 +3,154 @@
 :root {
   --font-jakarta: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --color-cream: #FFF9F0;
-  --color-primary: #FF6B6B;
-  --color-secondary: #FFD93D;
-  --color-ink: #2D2323;
+
+  /* ── Yellow-glass palette ───────────────────────────────── */
+  --color-cream: #FFFDF2;
+  --color-primary: #D97706;          /* warm amber (replaces coral accent) */
+  --color-secondary: #FACC15;
+  --color-ink: #4A3B12;              /* warm dark for borders/text */
+
+  /* Glass tokens */
+  --glass-bg: rgba(255, 250, 224, 0.45);
+  --glass-bg-strong: rgba(255, 248, 210, 0.62);
+  --glass-border: rgba(234, 179, 8, 0.38);
+  --glass-shadow: 0 10px 30px rgba(202, 138, 4, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  --glass-blur: blur(14px) saturate(150%);
 }
 
 body {
   font-family: var(--font-jakarta);
-  background-color: var(--color-cream);
-  color: var(--color-ink);
+  color: #3B2F0B;
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 600px at 12% -10%, rgba(253, 224, 71, 0.55), transparent 60%),
+    radial-gradient(900px 700px at 100% 5%, rgba(251, 191, 36, 0.40), transparent 55%),
+    linear-gradient(160deg, #FFFDF2 0%, #FFF6D6 48%, #FCE9A6 100%);
+  background-attachment: fixed;
+}
+
+/* Paint the same warm-yellow base on every page <main> wrapper
+   (they all carry the old cream `bg-[#FFF9F0]`). */
+main[class*="bg-[#FFF9F0]"] {
+  background:
+    radial-gradient(1100px 600px at 12% -10%, rgba(253, 224, 71, 0.55), transparent 60%),
+    radial-gradient(900px 700px at 100% 5%, rgba(251, 191, 36, 0.40), transparent 55%),
+    linear-gradient(160deg, #FFFDF2 0%, #FFF6D6 48%, #FCE9A6 100%) !important;
+  background-attachment: fixed;
 }
 
 ::selection {
-  background-color: #FFD93D;
-  color: var(--color-ink);
+  background-color: #FACC15;
+  color: #3B2F0B;
 }
 
+/* ── GLASS: every brutalist-shadowed surface becomes frosted ──
+   Catches all `shadow-[…px_…px_0px_#2D2323]` utilities used inline
+   across the pages/components and turns the hard ink shadow into a
+   soft golden glow with a backdrop blur. */
+[class*="_0px_#2D2323"] {
+  box-shadow: var(--glass-shadow) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* Soften the hard ink borders into translucent gold (full borders only,
+   leaving the subtle /10 /5 dividers untouched). */
+[class~="border-stone-900"] {
+  border-color: var(--glass-border) !important;
+}
+
+/* Make the solid surfaces translucent so the blur reads as real glass. */
+[class~="bg-white"],
+[class~="bg-amber-50"],
+[class~="bg-stone-50"] {
+  background-color: var(--glass-bg) !important;
+}
+[class~="bg-yellow-400"] {
+  background-color: rgba(250, 204, 21, 0.55) !important;
+}
+[class*="bg-[#FFF9F0]/80"] {
+  background-color: rgba(255, 250, 224, 0.55) !important;
+}
+
+/* Fold the coral accent into the yellow family (amber). */
+[class*="bg-[#FF6B6B]"],
+[class*="bg-[#FF8A65]"] {
+  background-color: var(--color-primary) !important;
+}
+[class*="text-[#FF6B6B]"],
+.text-accent {
+  color: var(--color-primary) !important;
+}
+
+/* ── Shared component classes, redefined as glass ──────────── */
 .btn-primary {
-  background: var(--color-primary);
-  color: #fff;
-  border: 2px solid var(--color-ink);
-  box-shadow: 4px 4px 0px var(--color-ink);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.95), rgba(217, 119, 6, 0.92));
+  color: #2A2207;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .btn-primary:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px var(--color-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(202, 138, 4, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .btn-ghost {
-  background: #ffffff;
-  color: var(--color-ink);
-  border: 2px solid var(--color-ink);
-  box-shadow: 4px 4px 0px var(--color-ink);
+  background: var(--glass-bg-strong);
+  color: #3B2F0B;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .btn-ghost:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px var(--color-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(202, 138, 4, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .module-card {
-  transition: transform 0.2s, box-shadow 0.2s;
-  background-color: #ffffff;
-  border: 2px solid var(--color-ink);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: 1rem;
-  box-shadow: 4px 4px 0px var(--color-ink);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .module-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px var(--color-ink);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(202, 138, 4, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+.badge-network {
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: #3B2F0B;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.page-title {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Keep a whisper of grain texture, but clean enough to read as glass. */
 .grain {
   position: relative;
 }
@@ -68,31 +160,8 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.15;
+  opacity: 0.05;
   mix-blend-mode: multiply;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-.badge-network {
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 600;
-  background: #FFD93D;
-  border: 2px solid var(--color-ink);
-  color: var(--color-ink);
-  padding: 0.25rem 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.page-title {
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.text-accent {
-  color: var(--color-primary);
 }
