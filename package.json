@@ -18,6 +18,7 @@
     "@pushprotocol/restapi": "^1.7.32",
     "@rainbow-me/rainbowkit": "^2.2.11",
     "@tanstack/react-query": "^5.100.14",
+    "@terminal3/t3n-sdk": "^3.5.0",
     "ethers": "^5.7.2",
     "framer-motion": "^12.40.0",
     "groq-sdk": "^1.2.1",
