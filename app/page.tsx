@@ -418,7 +418,7 @@ export default function MarketingLanding() {
       {/* Footer */}
       <footer className="py-12 px-6 text-stone-900/60 text-xs md:text-sm border-t-2 border-stone-900 max-w-7xl mx-auto text-center flex flex-col gap-6">
         <div className="font-semibold text-stone-900 flex flex-col gap-1">
-          <p>© {new Date().getFullYear()} vsrupeshkumar (Blockchain Engineer / Quantum Researcher)</p>
+          <p>© {new Date().getFullYear()} vsrupeshkumar</p>
           <p>All Rights Reserved.</p>
         </div>
         
