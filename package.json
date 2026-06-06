@@ -10,6 +10,7 @@
     "lint": "eslint",
     "rare:mint": "tsx scripts/rare-mint.ts",
     "proof": "tsx --env-file-if-exists=.env.local scripts/onchain-proof.ts",
+    "t3": "tsx --env-file-if-exists=.env.local scripts/t3-agent.ts",
     "compile": "hardhat compile --config contracts/hardhat.config.ts",
     "test:contracts": "hardhat test --config contracts/hardhat.config.ts",
     "deploy:arbitrum-sepolia": "hardhat run contracts/scripts/deploy.ts --config contracts/hardhat.config.ts --network arbitrumSepolia"
